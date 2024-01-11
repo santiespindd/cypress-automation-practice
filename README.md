@@ -1,6 +1,6 @@
 # Cypress Automation Practice
 
-![Cypress Logo](https://www.cypress.io/_astro/navbar-brand.0d71ff96.svg)
+<img src="https://raw.githubusercontent.com/simple-icons/simple-icons/6e46ec1fc23b60c8fd0d2f2ff46db82e16dbd75f/icons/cypress.svg" alt="cypress" width="40" height="40"/>
 
 
 Este repositorio contiene un proyecto de automatización de pruebas utilizando Cypress en la página web [Automation Exercise](https://automationexercise.com/) con el propósito de mejorar las habilidades en pruebas de software.
