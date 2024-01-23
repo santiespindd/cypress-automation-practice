@@ -1,3 +1,5 @@
+/// <reference types="Cypress" />
+
 describe('Api Testing practice', () => {
   it('Validate API 1: Get All Products List', () => {
     cy.request('https://automationexercise.com/api/productsList').then(
@@ -183,6 +185,133 @@ describe('Api Testing practice', () => {
     });
   });
 
+  it('API 11: POST To Create/Register User Account', () => {
+    cy.request({
+      method: 'POST' ,
+      form: true,
+      url:'https://automationexercise.com/api/createAccount',
+      body:{
+        "name": "NombreUsuarioSanti",
+        "email": "correoSanti_1975@example.com",
+        "password": "contraseña123",
+        "title": "Mr",
+        "birth_date": 15,
+        "birth_month": 7,
+        "birth_year": 1990,
+        "firstname": "Nombre",
+        "lastname": "Apellido",
+        "company": "NombreEmpresa",
+        "address1": "DirecciónPrincipal",
+        "address2": "DirecciónSecundaria",
+        "country": "País",
+        "zipcode": "CódigoPostal",
+        "state": "Estado",
+        "city": "Ciudad",
+        "mobile_number": "1234567890"
+      }
+     } ).then((response) =>{
+
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.responseCode).to.eq(201);
+      expect(responseBody.message).to.eq('User created!');
+
+     })
+  });
+
   
+
+  it('API 13: PUT METHOD To Update User Account', () => {
+    cy.request({
+      method: 'PUT' ,
+      form: true,
+      url:'https://automationexercise.com/api/updateAccount',
+      body:{
+        "name": "NombreUsuarioSantiEditado",
+        "email": "correoSanti_1975@example.com",
+        "password": "contraseña123",
+        "title": "Mr",
+        "birth_date": 16,
+        "birth_month": 8,
+        "birth_year": 1993,
+        "firstname": "Nombre",
+        "lastname": "Apellido",
+        "company": "NombreEmpresa",
+        "address1": "DirecciónPrincipal",
+        "address2": "DirecciónSecundaria",
+        "country": "País",
+        "zipcode": "CódigoPostal",
+        "state": "Estado",
+        "city": "Ciudad",
+        "mobile_number": "1234567890"
+      }
+     } ).then((response) =>{
+
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.responseCode).to.eq(200);
+      expect(responseBody.message).to.eq('User updated!');
+
+     })
+  });
+  
+  it('API 14: GET user account detail by email', () => {
+    
+    cy.request(
+      {
+        method: 'GET',
+        url: 'https://automationexercise.com/api/getUserDetailByEmail?email=correoSanti_1975@example.com',
+      }
+    ).then((response) => {
+       
+    const responseBody = JSON.parse(response.body);
+ 
+      console.log(responseBody.responseCode)
+    expect(responseBody.responseCode).to.eq(200);
+    expect(responseBody.user).to.not.be.empty //verifico que tragia un user
+    const user = responseBody.user
+    //verifico que traiga bien todos los datos definidos
+    expect(user.id).to.not.be.undefined;
+    expect(user.name).to.not.be.undefined;
+    expect(user.email).to.not.be.undefined;
+    expect(user.title).to.not.be.undefined;
+    expect(user.birth_day).to.not.be.undefined;
+    expect(user.birth_month).to.not.be.undefined;
+    expect(user.birth_year).to.not.be.undefined;
+    expect(user.first_name).to.not.be.undefined;
+    expect(user.last_name).to.not.be.undefined;
+    expect(user.company).to.not.be.undefined;
+    expect(user.address1).to.not.be.undefined;
+    expect(user.address2).to.not.be.undefined;
+    expect(user.country).to.not.be.undefined;
+    expect(user.state).to.not.be.undefined;
+    expect(user.city).to.not.be.undefined;
+    expect(user.zipcode).to.not.be.undefined;
+    
+
+          
+  })
+  });
+
+
+  it('API 12: DELETE METHOD To Delete User Account', () => {
+    cy.request({
+      method: 'DELETE',  
+      url:'https://automationexercise.com/api/deleteAccount',
+      form: true,
+      body:{
+        email:'correoSanti_1975@example.com',
+        password: 'contraseña123',
+       
+      }
+
+    }).then((response) => {
+      
+      const responseBody = JSON.parse(response.body)
+      expect(response.status).to.eq(200);
+      expect(responseBody.message).to.eq('Account deleted!');
+      expect(responseBody.responseCode).to.eq(200);
+     
+    });
+
+});
 
 });

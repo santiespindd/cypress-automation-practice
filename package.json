@@ -1,9 +1,11 @@
-{  
+{
   "scripts": {
-    "cy:open": "npx cypress open"
+    "cy:open": "npx cypress open -b chrome",
+    "cy:run:chrome":"npx cypress run -b chrome"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
-    "cypress": "^13.6.2"
+    "cypress": "^13.6.2",
+    "mochawesome": "^7.1.3"
   }
 }
