@@ -16,6 +16,8 @@ describe('Automation Exercise' , ()=>{
 
             cy.title().should('eq', 'Automation Exercise');
 
+
+      //este lo tengo q sacar de aca
       cy.log('Navigate to sign up page');
 
             cy.get('.shop-menu > .nav > :nth-child(4) > a').click();
@@ -161,6 +163,22 @@ describe('Automation Exercise' , ()=>{
                   cy.get('b').should('have.text', 'Account Deleted!');
                   cy.get('[data-qa="continue-button"]').click();
       
+   });
+
+   it.only('Test Case 6: Contact Us Form', () => {
+      cy.get('.shop-menu > .nav > :nth-child(8) > a').click();
+      cy.get('div.contact-form > .title').should('include.text','Get In Touch');
+      cy.get('[data-qa="name"]').type('Carlos');
+      cy.get('[data-qa="email"]').type('carlitos_tevez@gmail.com');
+      cy.get('[data-qa="subject"]').type('Acerca de la página');
+      cy.get('[data-qa="message"]').type('Hola muy linda página, saludos');
+      cy.get(':nth-child(6) > .form-control').selectFile('cypress/fixtures/contact-us-test.txt');
+      cy.get('[data-qa="submit-button"]').click();
+      cy.get('.status').should('include.text','Success! Your details have been submitted successfully.');
+      cy.get('span').click()
+      cy.title().should('eq', 'Automation Exercise');
+
+
    });
 
    
