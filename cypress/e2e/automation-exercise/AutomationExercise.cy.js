@@ -18,9 +18,9 @@ describe('Automation Exercise' , ()=>{
 
 
       //este lo tengo q sacar de aca
-      cy.log('Navigate to sign up page');
+     /* cy.log('Navigate to sign up page');
 
-            cy.get('.shop-menu > .nav > :nth-child(4) > a').click();
+            cy.get('.shop-menu > .nav > :nth-child(4) > a').click();*/
 
     });
     
@@ -165,7 +165,7 @@ describe('Automation Exercise' , ()=>{
       
    });
 
-   it.only('Test Case 6: Contact Us Form', () => {
+   it('Test Case 6: Contact Us Form', () => {
       cy.get('.shop-menu > .nav > :nth-child(8) > a').click();
       cy.get('div.contact-form > .title').should('include.text','Get In Touch');
       cy.get('[data-qa="name"]').type('Carlos');
@@ -181,8 +181,74 @@ describe('Automation Exercise' , ()=>{
 
    });
 
-   
+   it('Test Case 7: Verify Test Cases Page', () => {
+
+      cy.get('.shop-menu > .nav > :nth-child(5)').click();
+       cy.url().should('include', '/test_cases');
+      cy.get('b').should('have.text','Test Cases');
+
+      for(let i=1 ; i<27 ; i++){
+         cy.get('#form > .container > .panel-group').should('include.text','Test Case '+i);
+      }
+      
+
+   });
+
+   it('Test Case 8: Verify All Products and product detail page', () => {
+
+       
+      let price1;
+      cy.get('.shop-menu > .nav > :nth-child(2) > a').click();
+      cy.url().should('include', '/products');
+      cy.title().should('eq', 'Automation Exercise - All Products');
+      cy.get('.title').should('include.text','All Products');
+      cy.get('.features_items').should('be.not.empty');
+      cy.get('.features_items').should('be.visible');
+      cy.get(':nth-child(3) > .product-image-wrapper > .single-products > .productinfo > h2').invoke('text').then((valor) =>{
+         this.price1 = valor;
+      }
+      )
+      cy.get(':nth-child(3) > .product-image-wrapper > .choose > .nav > li > a').click();
+      cy.url().should('include', '/product_details/');
+      cy.get('.product-information > h2').should('be.visible'); //titulo
+      cy.get('.product-information > :nth-child(3)').should('be.visible') //categoria
+      cy.get('.product-information > :nth-child(3)').should('be.visible') //precio
+      cy.get('.product-information > :nth-child(6)').should('be.visible') //availability
+      cy.get('.product-information > :nth-child(7)').should('be.visible') //condition
+      cy.get('.product-information > :nth-child(8)').should('be.visible') //brand
 
 
+   });
+
+   it.only('Test Case 9: Search Product', () => {
+      const searchProducts = ['Winter Top', 'Men Tshirt', 'Blue Cotton Indie Mickey Dress', 'Sleeves Printed Top - White', 'Grunt Blue Slim Fit Jeans', 'Rust Red Linen Saree']
+      
+      cy.get('.shop-menu > .nav > :nth-child(2) > a').click();
+      cy.url().should('include', '/products');
+      cy.title().should('eq', 'Automation Exercise - All Products');
+      cy.get('.title').should('include.text','All Products');
+
+      searchProducts.forEach(  (searchProduct) => {
+         {
+            cy.log(searchProduct)
+            cy.get('#search_product').type(searchProduct);
+            cy.get('#submit_search').click();
+      
+            cy.get('.features_items').should('be.not.empty');
+            cy.get('.features_items').should('be.visible');
+      
+            cy.get('.features_items').should('be.not.empty');
+            cy.get('.title').should('include.text','Searched Products');
+            cy.get('.productinfo p')
+            .each(($elemento) => {
+                  cy.wrap($elemento).invoke('text').should('match', new RegExp(searchProduct, 'i'));
+            });
+            cy.get('#search_product').clear();
+         }
+      } )
+     
+    
+   });
+      
 
 })
