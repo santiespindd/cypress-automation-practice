@@ -205,7 +205,7 @@ describe('Automation Exercise' , ()=>{
       cy.get('.features_items').should('be.not.empty');
       cy.get('.features_items').should('be.visible');
       cy.get(':nth-child(3) > .product-image-wrapper > .single-products > .productinfo > h2').invoke('text').then((valor) =>{
-         this.price1 = valor;
+         price1 = valor;
       }
       )
       cy.get(':nth-child(3) > .product-image-wrapper > .choose > .nav > li > a').click();
@@ -258,13 +258,57 @@ describe('Automation Exercise' , ()=>{
 
    });
    
-   it.only('Test Case 11: Verify Subscription in Cart page', () => {
+   it('Test Case 11: Verify Subscription in Cart page', () => {
       cy.get('.shop-menu > .nav > :nth-child(3) > a').click();
       cy.get('#susbscribe_email').type('santiago@test.com')
       cy.get('#subscribe').click();
       cy.get('#footer').should('contain.text','You have been successfully subscribed!');
    });
    
+   it.only('Test Case 12: Add Products in Cart', () => {
+
+      let precioProducto1;
+      let precioProducto2;
+
+      cy.get('.shop-menu > .nav > :nth-child(2) > a').click();
+      cy.url().should('include', '/products');
+      cy.title().should('eq', 'Automation Exercise - All Products');
+
+      cy.get(':nth-child(3) > .product-image-wrapper > .single-products > .productinfo > .btn').click();
+      cy.get(':nth-child(3) > .product-image-wrapper > .single-products > .productinfo > h2').invoke('text').then((valor) =>{
+         precioProducto1= valor.replace(/[^0-9]+/g, "");
+      });
+      cy.get('.modal-footer > .btn').click();
+      
+      cy.get(':nth-child(4) > .product-image-wrapper > .single-products > .productinfo > .btn').click();
+      cy.get(':nth-child(4) > .product-image-wrapper > .single-products > .productinfo > h2').invoke('text').then((valor) =>{
+         precioProducto2= valor.replace(/[^0-9]+/g, "");
+      });
+
+      cy.get('.modal-footer > .btn').click();
+
+      cy.get('.shop-menu > .nav > :nth-child(3) > a').click();
+
+
+      cy.get('#product-1 > .cart_price > p').invoke('text').then((valor)=>{
+         expect(valor.replace(/[^0-9]+/g, "")).to.be.equal(precioProducto1);
+      });
+
+      cy.get('#product-2 > .cart_price > p').invoke('text').then((valor)=>{
+         expect(valor.replace(/[^0-9]+/g, "")).to.be.equal(precioProducto2);
+      });
+
+      cy.get('#product-1 > .cart_quantity > .disabled').invoke('text').should('eq','1');
+      cy.get('#product-2 > .cart_quantity > .disabled').invoke('text').should('eq','1');
+
+      cy.get('#product-1 > .cart_total > .cart_total_price').invoke('text').then((valor)=>{
+         expect(valor.replace(/[^0-9]+/g, "")).to.be.equal(precioProducto1);
+      });
+      cy.get('#product-2 > .cart_total > .cart_total_price').invoke('text').then((valor)=>{
+         expect(valor.replace(/[^0-9]+/g, "")).to.be.equal(precioProducto2);
+      });
+
+   });
    
 
 })
