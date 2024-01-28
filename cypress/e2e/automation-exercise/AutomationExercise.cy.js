@@ -220,7 +220,7 @@ describe('Automation Exercise' , ()=>{
 
    });
 
-   it.only('Test Case 9: Search Product', () => {
+   it('Test Case 9: Search Product', () => {
       const searchProducts = ['Winter Top', 'Men Tshirt', 'Blue Cotton Indie Mickey Dress', 'Sleeves Printed Top - White', 'Grunt Blue Slim Fit Jeans', 'Rust Red Linen Saree']
       
       cy.get('.shop-menu > .nav > :nth-child(2) > a').click();
@@ -249,6 +249,22 @@ describe('Automation Exercise' , ()=>{
      
     
    });
-      
+
+   it('Test Case 10: Verify Subscription in home page', () => {
+      cy.get('#footer').scrollIntoView();
+      cy.get('#susbscribe_email').type('santiago@test.com')
+      cy.get('#subscribe').click();
+      cy.get('#footer').should('contain.text','You have been successfully subscribed!');
+
+   });
+   
+   it.only('Test Case 11: Verify Subscription in Cart page', () => {
+      cy.get('.shop-menu > .nav > :nth-child(3) > a').click();
+      cy.get('#susbscribe_email').type('santiago@test.com')
+      cy.get('#subscribe').click();
+      cy.get('#footer').should('contain.text','You have been successfully subscribed!');
+   });
+   
+   
 
 })
