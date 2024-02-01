@@ -265,7 +265,7 @@ describe('Automation Exercise' , ()=>{
       cy.get('#footer').should('contain.text','You have been successfully subscribed!');
    });
    
-   it.only('Test Case 12: Add Products in Cart', () => {
+   it('Test Case 12: Add Products in Cart', () => {
 
       let precioProducto1;
       let precioProducto2;
@@ -310,5 +310,23 @@ describe('Automation Exercise' , ()=>{
 
    });
    
+   it.only('Test Case 13: Verify Product quantity in Cart', () => {
+      const cantidad='4';
+      cy.get('.shop-menu > .nav > :nth-child(2) > a').click();
+      cy.url().should('include', '/products');
+      cy.title().should('eq', 'Automation Exercise - All Products');
+      cy.get('.title').should('include.text','All Products');
+
+      cy.get(':nth-child(3) > .product-image-wrapper > .choose > .nav > li > a').click()
+      cy.get('#quantity').clear();
+      cy.get('#quantity').type(cantidad);
+      cy.get(':nth-child(5) > .btn').click();
+      cy.get('.modal-footer > .btn').click();
+      cy.get('.shop-menu > .nav > :nth-child(3) > a').click();
+      cy.get('.disabled').invoke('text').then((value)=>{
+            expect(value).to.be.equal(cantidad);
+      })
+      
+   });
 
 })
