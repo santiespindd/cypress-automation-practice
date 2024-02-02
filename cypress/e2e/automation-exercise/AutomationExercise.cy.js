@@ -1,6 +1,8 @@
 /// <reference types="Cypress" />
 import HomePage from "../../support/pageobjects/homePage";
 import LoginPage from "../../support/pageobjects/loginPage";
+import SignUpDetailsPage from "../../support/pageobjects/signUpDetailsPage";
+import SignUpPage from "../../support/pageobjects/signUpPage";
 
 
 describe('Automation Exercise' , ()=>{
@@ -23,62 +25,69 @@ describe('Automation Exercise' , ()=>{
     
     
 
-    it('Test Case 1: Register User', function() {
+    it.only('Test Case 1: Register User', function() {
 
+      
+        const signUpObj = new SignUpPage();
+        const homeObj = new HomePage();
+        const detailsPageObj = new SignUpDetailsPage();
+
+        homeObj.toLoginSignUpPage();
         
-        cy.log('Verify New User Signup! is visible')
+        cy.log('Verify New User Signup! is visible');
               
-              cy.get('.signup-form > h2').should('have.text' , 'New User Signup!')
+              signUpObj.elements.signUpTitle().should('have.text' , 'New User Signup!');
         
         cy.log('Enter Name and Email and Submit')
 
-              cy.get('[data-qa="signup-name"]').type(this.testdata.name)
-              cy.get('[data-qa="signup-email"]').type(this.testdata.email)
-              cy.get('[data-qa="signup-button"]').click()
+              signUpObj.enterName(this.testdata.name);
+              signUpObj.enterEmail(this.testdata.email);
+              signUpObj.clickSubmit();
         
             
          cy.log('Fill details: Title, Name, Email, Password, Date of birth');
 
-              cy.get(':nth-child(1) > b').should('have.text', 'Enter Account Information')
-              cy.get('#id_gender1').click()
-              cy.get('[data-qa="password"]').type(this.testdata.password)
-              cy.get('[data-qa="days"]').select(20)
-              cy.get('[data-qa="months"]').select(11)
-              cy.get('[data-qa="years"]').select('1993')
-
-              cy.get('#optin').click()
-              cy.get('#newsletter').click()
+              detailsPageObj.elements.detailsPageTitle().should('have.text', 'Enter Account Information')
+              detailsPageObj.selectMrTitle()
+              detailsPageObj.enterPassword(this.testdata.password);
+              detailsPageObj.enterDayOfBirth(20);
+              detailsPageObj.enterMonthOfBirth(11);
+              detailsPageObj.enterYearOfBirth('1993');
+              
+              detailsPageObj.recieveOffersCheckboxClick();
+              detailsPageObj.newsletterCheckboxClick();
+             
 
         cy.log('Fill details: First name, Last name, Company, Address, Address2, Country, State, City, Zipcode, Mobile Number')
 
-                  cy.get('[data-qa="first_name"]').type('Santiago')
+                  detailsPageObj.enterName('Santiago')
                   
-                  cy.get('[data-qa="last_name"]').type('Tester')
+                  detailsPageObj.enterLastName('Tester')
 
-                  cy.get('[data-qa="company"]').type('Automation Company')
+                  detailsPageObj.enterCompany('Automation Company')
 
-                  cy.get('[data-qa="address"]').type('Pje Tester 1234')
+                  detailsPageObj.enterAdress('Pje Tester 1234')
 
-                  cy.get('[data-qa="address2"]').type('Pje Automation 1234')
+                  detailsPageObj.enterAdress2('Pje Automation 1234')
                   
-                  cy.get('[data-qa="country"]').select('Canada')
+                  detailsPageObj.enterCountry('Canada');
 
-                  cy.get('[data-qa="state"]').type('TestingTown')
+                  detailsPageObj.enterState('TestingTown')
 
-                  cy.get('[data-qa="city"]').type('Automation City')
+                  detailsPageObj.enterCity('Automation City')
 
-                  cy.get('[data-qa="zipcode"]').type('3000')
+                  detailsPageObj.enterZipCode('3000')
 
-                  cy.get('[data-qa="mobile_number"]').type('123456789')
+                  detailsPageObj.enterMobileNumber('123456789')
 
-                  cy.get('[data-qa="create-account"]').click()
+                  detailsPageObj.clickSubmit();
 
        cy.log('Verify that ACCOUNT CREATED! is visible')
-                  cy.get('b').should('have.text', 'Account Created!')
-                  cy.get('[data-qa="continue-button"]').click()
+                  homeObj.elements.alertText().should('have.text', 'Account Created!')
+                  homeObj.clickOnContinue();
 
                
-                  cy.get(':nth-child(10) > a').should('include.text', 'Logged in as ' + this.testdata.name)
+                  homeObj.elements.loggedUser().should('include.text', 'Logged in as ' + this.testdata.name)
        
       
 
@@ -93,7 +102,7 @@ describe('Automation Exercise' , ()=>{
       const loginObj = new LoginPage();
       const homeObj = new HomePage();
 
-      homeObj.elements.toLoginSignUpPage().click();
+      homeObj.toLoginSignUpPage()
       loginObj.elements.loginTitle().should('contain','Login to your account');
       loginObj.enterUserEmail(this.testdata.email);
       loginObj.enterPassword(this.testdata.password);

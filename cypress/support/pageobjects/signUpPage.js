@@ -8,14 +8,16 @@ class SignUpPage{
     }
 
     enterName(name){
-        this.nameInput().type(name);
+        this.elements.nameInput().clear()
+        this.elements.nameInput().type(name);
     }
     enterEmail(email){
-        this.emailInput().type(email);
+        this.elements.emailInput().clear()
+        this.elements.emailInput().type(email);
     }
 
     clickSubmit(){
-        this.signUpBtn().click();
+        this.elements.signUpBtn().click();
     }
 
 
