@@ -17,7 +17,7 @@ describe('Automation Exercise' , ()=>{
 
             cy.title().should('eq', 'Automation Exercise');
       
-            const homeObj = new HomePage();
+            
 
     });
     
@@ -26,9 +26,6 @@ describe('Automation Exercise' , ()=>{
     it('Test Case 1: Register User', function() {
 
         
-
-      
-
         cy.log('Verify New User Signup! is visible')
               
               cy.get('.signup-form > h2').should('have.text' , 'New User Signup!')
@@ -102,7 +99,7 @@ describe('Automation Exercise' , ()=>{
       loginObj.enterPassword(this.testdata.password);
       loginObj.clickSubmit();
 
-      loginObj.elements.loggedUser().should('include.text', 'Logged in as ' + this.testdata.name);
+      homeObj.elements.loggedUser().should('include.text', 'Logged in as ' + this.testdata.name);
 
    });
    

@@ -5,7 +5,7 @@ class LoginPage {
         emailInput: ()=> cy.get('[data-qa="login-email"]'),
         passwordInput: () => cy.get('[data-qa="login-password"]'),
         loginBtn: ()=> cy.get('[data-qa="login-button"]'),
-        loggedUser: ()=> cy.get(':nth-child(10) > a')
+        accountAlertText: ()=> cy.get('.login-form')
     }
 
     enterUserEmail(email){
