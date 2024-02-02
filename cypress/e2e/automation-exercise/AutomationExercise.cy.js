@@ -1,8 +1,9 @@
 /// <reference types="Cypress" />
+import HomePage from "../../support/pageobjects/homePage";
+import LoginPage from "../../support/pageobjects/loginPage";
+
 
 describe('Automation Exercise' , ()=>{
-
-   
 
     beforeEach(() => {
 
@@ -15,12 +16,8 @@ describe('Automation Exercise' , ()=>{
       cy.log('Should have a title')
 
             cy.title().should('eq', 'Automation Exercise');
-
-
-      //este lo tengo q sacar de aca
-     /* cy.log('Navigate to sign up page');
-
-            cy.get('.shop-menu > .nav > :nth-child(4) > a').click();*/
+      
+            const homeObj = new HomePage();
 
     });
     
@@ -94,14 +91,18 @@ describe('Automation Exercise' , ()=>{
 
     });
     
-   it('Test Case 2: Login User with correct email and password', function() {
+   it.only('Test Case 2: Login User with correct email and password', function() {
 
-      cy.get('.login-form > h2').should('contain','Login to your account');
-      cy.get('[data-qa="login-email"]').type(this.testdata.email);
-      cy.get('[data-qa="login-password"]').type(this.testdata.password);
-      
-      cy.get('[data-qa="login-button"]').click();
-      cy.get(':nth-child(10) > a').should('include.text', 'Logged in as ' + this.testdata.name);
+      const loginObj = new LoginPage();
+      const homeObj = new HomePage();
+
+      homeObj.elements.toLoginSignUpPage().click();
+      loginObj.elements.loginTitle().should('contain','Login to your account');
+      loginObj.enterUserEmail(this.testdata.email);
+      loginObj.enterPassword(this.testdata.password);
+      loginObj.clickSubmit();
+
+      loginObj.elements.loggedUser().should('include.text', 'Logged in as ' + this.testdata.name);
 
    });
    
@@ -310,7 +311,7 @@ describe('Automation Exercise' , ()=>{
 
    });
    
-   it.only('Test Case 13: Verify Product quantity in Cart', () => {
+   it('Test Case 13: Verify Product quantity in Cart', () => {
       const cantidad='4';
       cy.get('.shop-menu > .nav > :nth-child(2) > a').click();
       cy.url().should('include', '/products');
