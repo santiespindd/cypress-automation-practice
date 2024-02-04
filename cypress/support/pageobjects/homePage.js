@@ -3,9 +3,9 @@ class HomePage{
         toLoginSignUpPage : () => cy.get('.shop-menu > .nav > :nth-child(4) > a'),
         loggedUser: ()=> cy.get(':nth-child(10) > a'),
         logOutBtn: ()=> cy.get('.shop-menu > .nav > :nth-child(4) > a'),
-        deleteAccountBtn: ()=> cy.get('.shop-menu > .nav > :nth-child(5) > a'),
         continueBtn: ()=> cy.get('[data-qa="continue-button"]'),
         alertText: ()=> cy.get('b'),
+        deleteBtn: ()=> cy.get('.shop-menu > .nav > :nth-child(5) > a')
         
     }
 
@@ -14,6 +14,12 @@ class HomePage{
     }
     clickOnContinue(){
         this.elements.continueBtn().click();
+    }
+    logOut(){
+        this.elements.toLoginSignUpPage().click();
+    }
+    deleteAccount(){
+        this.elements.deleteBtn().click();
     }
 
 }

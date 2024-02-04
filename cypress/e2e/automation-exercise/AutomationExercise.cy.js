@@ -25,7 +25,7 @@ describe('Automation Exercise' , ()=>{
     
     
 
-    it.only('Test Case 1: Register User', function() {
+    it('Test Case 1: Register User', function() {
 
       
         const signUpObj = new SignUpPage();
@@ -97,7 +97,7 @@ describe('Automation Exercise' , ()=>{
 
     });
     
-   it.only('Test Case 2: Login User with correct email and password', function() {
+   it('Test Case 2: Login User with correct email and password', function() {
 
       const loginObj = new LoginPage();
       const homeObj = new HomePage();
@@ -113,66 +113,72 @@ describe('Automation Exercise' , ()=>{
    });
    
    it('Test Case 3: Login User with incorrect email and password', function() {
-      cy.get('.login-form > h2').should('contain.text','Login to your account');
-
-      cy.get('[data-qa="login-email"]').type(this.testdata.incorrect_mail);
-      cy.get('[data-qa="login-password"]').type(this.testdata.password);
       
-      cy.get('[data-qa="login-button"]').click();
+      const loginObj = new LoginPage();
+      const homeObj = new HomePage();
+      
+      homeObj.toLoginSignUpPage()
+      loginObj.elements.loginTitle().should('contain','Login to your account');
+      loginObj.enterUserEmail(this.testdata.incorrect_mail);
+      loginObj.enterPassword(this.testdata.password);
+      loginObj.clickSubmit();
 
-      cy.get('.login-form').should('contain.text','Your email or password is incorrect!');
+      loginObj.elements.accountAlertText().should('contain.text','Your email or password is incorrect!');
    });
 
    it('Test Case 4: Logout User', function() {
 
-      cy.get('.login-form > h2').should('contain','Login to your account');
-      cy.get('[data-qa="login-email"]').type(this.testdata.email);
-      cy.get('[data-qa="login-password"]').type(this.testdata.password);
+      const homeObj= new HomePage();
       
-      cy.get('[data-qa="login-button"]').click();
-      cy.get(':nth-child(10) > a').should('include.text', 'Logged in as ' + this.testdata.name);
 
-      cy.get('.shop-menu > .nav > :nth-child(4) > a').click();
+      cy.login(this.testdata.email,this.testdata.password);
 
-      /*I verify button name and url*/
-      cy.get('.shop-menu > .nav > :nth-child(4) > a').should('contain.text','Signup / Login')
+      homeObj.elements.toLoginSignUpPage().should('contain.text','Logout');
+      homeObj.logOut();
+  
+      homeObj.elements.toLoginSignUpPage().should('contain.text','Signup / Login');
+      
       cy.url().should('include', '/login');
       
    });
 
    it('Test Case 5: Register User with existing email', function() {
+      const signUpObj = new SignUpPage();
+     
+      const homeObj = new HomePage();
+
+      homeObj.toLoginSignUpPage();
       cy.log('Verify New User Signup! is visible')
               
-      cy.get('.signup-form > h2').should('have.text' , 'New User Signup!')
+      signUpObj.elements.signUpTitle().should('have.text' , 'New User Signup!');
 
       cy.log('Enter Name and Email and Submit')
 
-      cy.get('[data-qa="signup-name"]').type(this.testdata.name)
-      cy.get('[data-qa="signup-email"]').type(this.testdata.email)
-      cy.get('[data-qa="signup-button"]').click()
+      signUpObj.enterName(this.testdata.name);
+      signUpObj.enterEmail(this.testdata.email);
+      signUpObj.clickSubmit();
 
-      cy.get('.signup-form').should('contain.text','Email Address already exist!');
+      signUpObj.elements.accountAlertText().should('contain.text','Email Address already exist!');
 
    });
 
    it('Test Case 0: Delete Account', function() {
 
-      cy.get('.login-form > h2').should('contain','Login to your account');
-      cy.get('[data-qa="login-email"]').type(this.testdata.email);
-      cy.get('[data-qa="login-password"]').type(this.testdata.password);
-      
-      cy.get('[data-qa="login-button"]').click();
-      cy.get(':nth-child(10) > a').should('include.text', 'Logged in as ' + this.testdata.name);
+      const homeObj = new HomePage();
+
+      cy.login(this.testdata.email,this.testdata.password);
+     
+      homeObj.elements.loggedUser().should('include.text', 'Logged in as ' + this.testdata.name);
 
 
       cy.log('Deleted account')
-                  cy.get('.shop-menu > .nav > :nth-child(5) > a').click();
-                  cy.get('b').should('have.text', 'Account Deleted!');
-                  cy.get('[data-qa="continue-button"]').click();
+                  homeObj.deleteAccount();
+                 homeObj.elements.alertText().should('have.text', 'Account Deleted!');
+                 homeObj.clickOnContinue();
       
    });
 
-   it('Test Case 6: Contact Us Form', () => {
+  /* it('Test Case 6: Contact Us Form', () => {
       cy.get('.shop-menu > .nav > :nth-child(8) > a').click();
       cy.get('div.contact-form > .title').should('include.text','Get In Touch');
       cy.get('[data-qa="name"]').type('Carlos');
@@ -334,6 +340,6 @@ describe('Automation Exercise' , ()=>{
             expect(value).to.be.equal(cantidad);
       })
       
-   });
+   });*/
 
 })

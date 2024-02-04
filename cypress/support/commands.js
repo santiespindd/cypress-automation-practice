@@ -58,3 +58,34 @@
     });
 
     cy.visit('https://automationexercise.com')*/
+
+    Cypress.Commands.add('login',(email,password)=>{
+      cy.request({
+        method: 'GET',
+        url: 'https://automationexercise.com/login',
+        followRedirect: true,
+      }).then((response) => {
+        // Extrae el token CSRF de las cookies
+        const csrfToken = response.headers['set-cookie']
+          .find(cookie => cookie.startsWith('csrftoken='))
+          .split(';')[0]
+          .split('=')[1];
+      
+        // Realiza una solicitud POST al endpoint de inicio de sesión con el token CSRF
+        cy.request({
+          method: 'POST',
+          url: 'https://automationexercise.com/login',
+          followRedirect: true,
+          form: true,
+          headers: {
+            Referer: 'https://automationexercise.com/',
+          },
+          body: {
+            email: email,
+            password: password,
+            csrfmiddlewaretoken: csrfToken, // Agrega el token CSRF
+          },
+        });
+        cy.visit('https://automationexercise.com/');
+      });
+    })

@@ -4,7 +4,8 @@ class SignUpPage{
         signUpTitle: () => cy.get('.signup-form > h2'),
         nameInput: ()=>cy.get('[data-qa="signup-name"]'),
         emailInput: ()=> cy.get('[data-qa="signup-email"]'),
-        signUpBtn: ()=> cy.get('[data-qa="signup-button"]')
+        signUpBtn: ()=> cy.get('[data-qa="signup-button"]'),
+        accountAlertText: ()=> cy.get('.signup-form')
     }
 
     enterName(name){
