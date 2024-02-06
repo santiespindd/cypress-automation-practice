@@ -9,22 +9,18 @@ describe('Automation Exercise' , ()=>{
 
     beforeEach(() => {
 
-      cy.visit('https://automationexercise.com/');
+      cy.visit('/');
 
       cy.fixture('credentials').then( function (testdata){
             this.testdata = testdata;
         })
-
-      cy.log('Should have a title')
-
-            cy.title().should('eq', 'Automation Exercise');
+      cy.title().should('eq', 'Automation Exercise');
       
             
 
     });
     
     
-
     it('Test Case 1: Register User', function() {
 
       

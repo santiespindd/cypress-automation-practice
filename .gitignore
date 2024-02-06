@@ -2,3 +2,5 @@ node_modules/
 videos/
 mochawesome-report/
 reports/
+pageobjects/
+AutomationExercise.cy.js

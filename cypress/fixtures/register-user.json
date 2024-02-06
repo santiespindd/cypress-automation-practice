@@ -1,0 +1,29 @@
+{
+    "registerLink": ".shop-menu > .nav > :nth-child(4) > a",
+    "nameInput": "[data-qa='signup-name']",
+    "emailInput": "[data-qa='signup-email']",
+    "signUpBtn": "[data-qa='signup-button']",
+    "accountAlertText": ".signup-form",
+    "detailsPageTitle": ":nth-child(1) > b",
+    "mrTitleRadioButton": "#id_gender1",
+    "mrsTitleRadioButton": "#id_gender2",
+    "passwordInput": "[data-qa='password']",
+    "dayOfBirthOption": "[data-qa='days']",
+    "monthOfBirthOption": "[data-qa='months']",
+    "yearOfBirthOption": "[data-qa='years']",
+    "recieveOffersCheckbox": "#optin",
+    "newsletterCheckbox": "#newsletter",
+    "firstNameInput": "[data-qa='first_name']",
+    "lastnameInput": "[data-qa='last_name']",
+    "companyInput": "[data-qa='company']",
+    "addressInput": "[data-qa='address']",
+    "address2Input": "[data-qa='address2']",
+    "countryOption": "[data-qa='country']",
+    "stateInput": "[data-qa='state']",
+    "cityInput": "[data-qa='city']",
+    "zipcodeInput": "[data-qa='zipcode']",
+    "mobileNumberInput": "[data-qa='mobile_number']",
+    "createAccountBtn": "[data-qa='create-account']"
+    
+  }
+  

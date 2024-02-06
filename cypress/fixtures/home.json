@@ -1,0 +1,7 @@
+{
+    
+    "loggedUser": ":nth-child(10) > a",
+    "continueBtn": "[data-qa='continue-button']",
+     "deleteBtn": ".shop-menu > .nav > :nth-child(5) > a",
+     "alertText": "b"
+}

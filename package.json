@@ -1,4 +1,20 @@
 {
+  "name": "automation-exercise",
+  "version": "1.0.0",
+  "description": "Automatizacion de casos de pruebas de la pagina automationpractice.com/",
+  "main": "index.js",
+  "keywords": [
+    "automatizacion",
+    "qa",
+    "cypress",
+    "tutorial"
+  ],
+  "author": "Santiago Espindola",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/santiespindd/cypress-automation-practice"
+  },
   "scripts": {
     "cy:open": "npx cypress open -b chrome",
     "cy:run:chrome": "npx cypress run -b chrome"
