@@ -3,13 +3,11 @@ describe('Register and Login tests', () => {
 
     beforeEach(()=>{
         cy.visit('/')
-        cy.fixture("credentials").then(function(userdata){
-            this.userdata = userdata;
-        })
+        cy.fixture('credentials').as('userdata');
         cy.title().should('eq', 'Automation Exercise');
     })  
 
-    it.skip('Register User', function(){
+    it('Register User', function(){
 
             cy.fixture('register-user').then((newUser)=>{
                 cy.get(newUser.registerLink).click();
@@ -42,7 +40,7 @@ describe('Register and Login tests', () => {
             })
         
     });
-    it.only('Register User with existing email', function() {
+    it('Register User with existing email', function() {
         cy.fixture('register-user').then((newUser)=>{
             cy.get(newUser.registerLink).click();
             cy.get(newUser.nameInput).type(this.userdata.name);
@@ -53,18 +51,36 @@ describe('Register and Login tests', () => {
     });
 
 
-    it.skip('Login User with correct email and password', function() {
+    it('Login User with correct email and password', function() {
         cy.login(this.userdata.registered_email,this.userdata.password);
         cy.fixture('home').then((home)=>{
             cy.get(home.loggedUser).should('include.text', 'Logged in as ' + this.userdata.name);;
         })
     });
 
-    it.skip('Login User with incorrect email and password', function() {
+    it('Login User with incorrect email and password', function() {
 
         cy.login(this.userdata.incorrect_mail,this.userdata.password);
         cy.fixture('login').then((login)=>{
             cy.get(login.accountAlertText).should('contain.text','Your email or password is incorrect!');
+        })
+        
+    });
+
+    it('Logout User', function(){
+        cy.login(this.userdata.registered_email,this.userdata.password);
+        cy.fixture('home').then((home)=>{
+            cy.get(home.logOutBtn).click();
+            cy.get(home.loggedUser).should('not.exist') //Si no tengo iniciada una sesion, este web element no estara.
+        })
+    });
+
+    it('Delete Account', function(){
+        cy.login(this.userdata.email,this.userdata.password);
+        cy.fixture('home').then((home)=>{
+
+            cy.get(home.deleteBtn).click();
+            cy.get(home.alertText).should('have.text', 'Account Deleted!');
         })
         
     });

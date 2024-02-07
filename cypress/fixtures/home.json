@@ -1,7 +1,9 @@
 {
-    
+    "toLoginSignUpBtn": ".shop-menu > .nav > :nth-child(4) > a",
     "loggedUser": ":nth-child(10) > a",
     "continueBtn": "[data-qa='continue-button']",
      "deleteBtn": ".shop-menu > .nav > :nth-child(5) > a",
-     "alertText": "b"
+     "alertText": "b",
+     "logOutBtn": ".shop-menu > .nav > :nth-child(4) > a"
+     
 }

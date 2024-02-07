@@ -1,17 +1,23 @@
 /// <reference types="Cypress" />
 
 describe('Api Testing practice', () => {
-  it('Validate API 1: Get All Products List', () => {
-    cy.request('https://automationexercise.com/api/productsList').then(
+
+  beforeEach(()=>{
+    cy.fixture('credentials').as('user');
+    cy.fixture('routes').as('route');
+
+  })
+  it('Get All Products List', function(){
+    cy.request(this.route.productsList).then(
       (response) => {
         console.log(typeof response.body);
 
         expect(response.status).to.eq(200);
-        // Validar que la respuesta tenga el código 200
-        const responseBody = JSON.parse(response.body); //Parsear a json
-        expect(responseBody.responseCode).to.eq(200); //Validar que el codigo sea 200
-        expect(responseBody.products).to.have.length.greaterThan(0); //Valido que haya productos
-        expect(Array.isArray(responseBody.products)).to.be.true; //Valido que sea un array
+        
+        const responseBody = JSON.parse(response.body); 
+        expect(responseBody.responseCode).to.eq(200); 
+        expect(responseBody.products).to.have.length.greaterThan(0); 
+        expect(Array.isArray(responseBody.products)).to.be.true; 
         responseBody.products.forEach((product) => {
           //Valido que esten definidas todas las propiedades de los productos
           expect(product.brand).to.not.be.undefined;
@@ -24,8 +30,8 @@ describe('Api Testing practice', () => {
     );
   });
 
-  it('API 2: POST To All Products List', () => {
-    cy.request('POST', 'https://automationexercise.com/api/productsList', {
+  it('POST To All Products List', function(){
+    cy.request('POST', this.route.productsList, {
       id: 99,
       name: 'Red Top',
       price: 'Rs. 1000',
@@ -46,15 +52,15 @@ describe('Api Testing practice', () => {
     });
   });
 
-  it('API 3: Get All Brands List', () => {
-    cy.request('https://automationexercise.com/api/brandsList').then(
+  it('Get All Brands List',function(){
+    cy.request(this.route.brandsList).then(
       (response) => {
         expect(response.status).to.eq(200);
-        // Validar que la respuesta tenga el código 200
-        const responseBody = JSON.parse(response.body); //Parsear a json
-        expect(responseBody.responseCode).to.eq(200); //Validar que el codigo sea 200
-        expect(responseBody.brands).to.have.length.greaterThan(0); //Valido que haya marcas
-        expect(Array.isArray(responseBody.brands)).to.be.true; //Valido que sea un array
+       
+        const responseBody = JSON.parse(response.body); 
+        expect(responseBody.responseCode).to.eq(200); 
+        expect(responseBody.brands).to.have.length.greaterThan(0); 
+        expect(Array.isArray(responseBody.brands)).to.be.true; 
         responseBody.brands.forEach((brand) => {
           //Valido que esten definidas todas las propiedades de las marcas
           expect(brand.id).to.not.be.undefined;
@@ -64,8 +70,8 @@ describe('Api Testing practice', () => {
     );
   });
 
-  it('API 4: PUT To All Brands List', () => {
-    cy.request('POST', 'https://automationexercise.com/api/brandsList', {
+  it('PUT To All Brands List', function() {
+    cy.request('POST', this.route.brandsList, {
       id: 99,
       brand: 'Topper',
     }).then((response) => {
@@ -78,14 +84,14 @@ describe('Api Testing practice', () => {
     });
   });
 
-  it('API 5: POST To Search Product', () => {
+  it('POST To Search Product', function() {
     const productsToSearch = ['top', 'tshirt', 'jean', 'shoes'];
 
     productsToSearch.forEach((product) => {
       cy.log(product);
       cy.request({
         method: 'POST',
-        url: 'https://automationexercise.com/api/searchProduct',
+        url: this.route.searchProduct,
         form: true, // Indica que mando un formulario HTML
         body: {
           search_product: product,
@@ -95,7 +101,6 @@ describe('Api Testing practice', () => {
         expect(responseBody.responseCode).to.eq(200);
         expect(responseBody).to.have.property('products');
 
-        console.log(responseBody.products);
         if (responseBody.products.length > 0) {
           responseBody.products.forEach((product) => {
             //Valido que esten definidas todas las propiedades de los productos
@@ -110,10 +115,10 @@ describe('Api Testing practice', () => {
     });
   });
 
-  it('API 6: POST To Search Product without search_product parameter', () => {
+  it('POST To Search Product without search_product parameter', function() {
     cy.request({
       method: 'POST',
-      url: 'https://automationexercise.com/api/searchProduct',
+      url: this.route.searchProduct,
       form: true, // Indica que mando un formulario HTML
     }).then((response) => {
       cy.log(response.body);
@@ -125,14 +130,14 @@ describe('Api Testing practice', () => {
     });
   });
 
-  it('API 7: POST To Verify Login with valid details', () => {
+  it('POST To Verify Login with valid details', function(){
    cy.request({
       method: 'POST',
-      url: 'https://automationexercise.com/api/verifyLogin',
+      url: this.route.verifyLogin,
       form: true,
       body: {
-        email: 'test1996@gmail.com',
-        password: '1975SNEabg',
+        email: this.user.registered_email,
+        password: this.user.password
       },
     }).then((response) => {
       const responseBody = JSON.parse(response.body);
@@ -142,14 +147,14 @@ describe('Api Testing practice', () => {
     
   });
 
-  it('API 8: POST To Verify Login without email parameter', () => {
+  it('POST To Verify Login without email parameter', function() {
     cy.request({
       method: 'POST',
-      url: 'https://automationexercise.com/api/verifyLogin',
+      url: this.route.verifyLogin,
       form: true,
       body: {
        
-        password: '1975SNEabg',
+        password: this.user.password
       },
     }).then((response) => {
       const responseBody = JSON.parse(response.body);
@@ -158,10 +163,10 @@ describe('Api Testing practice', () => {
     });
   });
 
-  it('API 9: DELETE To Verify Login', () => {
+  it('DELETE To Verify Login', function() {
     cy.request({
       method: 'DELETE',
-      url: 'https://automationexercise.com/api/verifyLogin',
+      url:  this.route.verifyLogin,
     }).then((response) => {
       const responseBody = JSON.parse(response.body);
       expect(responseBody.responseCode).to.eq(405);
@@ -169,14 +174,14 @@ describe('Api Testing practice', () => {
     });
   });
 
-  it('API 10: POST To Verify Login with invalid details', () => {
+  it('POST To Verify Login with invalid details', function() {
     cy.request({
       method: 'POST',
-      url: 'https://automationexercise.com/api/verifyLogin',
+      url:  this.route.verifyLogin,
       form: true,
       body: {
-        email: 'test_incorrect@gmail.com',
-        password: '1975SNEabg',
+        email: this.user.incorrect_mail,
+        password: this.user.password,
       },
     }).then((response) => {
       const responseBody = JSON.parse(response.body);
@@ -185,15 +190,15 @@ describe('Api Testing practice', () => {
     });
   });
 
-  it('API 11: POST To Create/Register User Account', () => {
+  it('POST To Create/Register User Account',function() {
     cy.request({
       method: 'POST' ,
       form: true,
       url:'https://automationexercise.com/api/createAccount',
       body:{
         "name": "NombreUsuarioSanti",
-        "email": "correoSanti_1975@example.com",
-        "password": "contraseña123",
+        "email": this.user.apiEmail,
+        "password": this.user.apiPassword,
         "title": "Mr",
         "birth_date": 15,
         "birth_month": 7,
@@ -220,15 +225,15 @@ describe('Api Testing practice', () => {
 
   
 
-  it('API 13: PUT METHOD To Update User Account', () => {
+  it('PUT METHOD To Update User Account', function() {
     cy.request({
       method: 'PUT' ,
       form: true,
-      url:'https://automationexercise.com/api/updateAccount',
+      url:this.route.updateAccount,
       body:{
         "name": "NombreUsuarioSantiEditado",
-        "email": "correoSanti_1975@example.com",
-        "password": "contraseña123",
+        "email": this.user.apiEmail,
+        "password": this.user.apiPassword,
         "title": "Mr",
         "birth_date": 16,
         "birth_month": 8,
@@ -253,12 +258,12 @@ describe('Api Testing practice', () => {
      })
   });
   
-  it('API 14: GET user account detail by email', () => {
+  it('GET user account detail by email', function() {
     
     cy.request(
       {
         method: 'GET',
-        url: 'https://automationexercise.com/api/getUserDetailByEmail?email=correoSanti_1975@example.com',
+        url: this.route.getUserByEmail+this.user.apiEmail,
       }
     ).then((response) => {
        
@@ -292,14 +297,14 @@ describe('Api Testing practice', () => {
   });
 
 
-  it('API 12: DELETE METHOD To Delete User Account', () => {
+  it('DELETE METHOD To Delete User Account',function() {
     cy.request({
       method: 'DELETE',  
-      url:'https://automationexercise.com/api/deleteAccount',
+      url: this.route.deleteAccount,
       form: true,
       body:{
-        email:'correoSanti_1975@example.com',
-        password: 'contraseña123',
+        email: this.user.apiEmail,
+        password: this.user.apiPassword,
        
       }
 
