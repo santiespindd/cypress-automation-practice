@@ -1,0 +1,12 @@
+{
+    "pageTitle": "div.contact-form > .title",
+    "name": "[data-qa='name']",
+    "email": "[data-qa='email']",
+    "subject": "[data-qa='subject']",
+    "message": "[data-qa='message']",
+    "file": ":nth-child(6) > .form-control",
+    "submitBtn": "[data-qa='submit-button']",
+    "successMessage": ".status",
+    "toContactUs": ".shop-menu > .nav > :nth-child(8) > a" ,
+    "toHomeBtn": "span"
+}
