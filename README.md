@@ -46,7 +46,7 @@ Antes de comenzar, asegúrate de tener instalado:
 Para ejecutar las pruebas, utiliza el siguiente comando:
 
 ```bash
-npm cypress run -b chrome
+npx cypress run -b chrome
 ```
 
 ![image](https://github.com/santiespindd/cypress-automation-practice/assets/45414992/9266c633-d6e8-4ba5-bfa3-bc39470e66d9)
